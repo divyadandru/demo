@@ -132,7 +132,7 @@ NOTE: Object_Recogniser and cameraActions containers will be required in all met
    
 1. Go to actions console -> TEST
 
-1. Give command "talk to my test app" or "talk to <invocation name>"
+1. Give command "talk to my test app" or "talk to invocation name"
 
 1. Give other commands according to training phrases in each intent to test the respective intents.
 
