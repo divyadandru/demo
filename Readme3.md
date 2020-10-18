@@ -1,6 +1,10 @@
 ## Method 3
 If gactions does not have the "update" and "test" commands, instead has "push" and "deploy": then build actions.json via yaml structure
 
+NOTE: 
+Object_Recogniser and cameraActions containers will be required in all methods by default. Current process is for building assistant container.
+
+
 ## Resources
 1. [Build Actions for Google Assistant using Actions SDK (Level 1)](https://developers.google.com/codelabs/actions-sdk-1#0)
 
