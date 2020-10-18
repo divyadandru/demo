@@ -26,6 +26,8 @@ NOTE: This is the official method given by documentation after device registrati
 
 1. [Building Google Assistant Apps with Python Demo| Paul Bailey @ PyBay2018](https://www.youtube.com/watch?v=5eRxMyf_2Rc)
 
+1. [Sample App](https://github.com/pizzapanther/google-actions-python-example)
+
 ## Server Setup
 
 This Assistant will use ngrok to quickly provide a public URL for the flask-assistant webhook. This is required for Dialogflow to communicate with the assistant app.
@@ -85,7 +87,7 @@ Note the Forwarding https URL.
 1. Start the ngrok server, if not already started.
 
     ```bash
-    1../ngrok http 5000
+    ./ngrok http 5000
     ```
 1. Copy the forwarding https url, and paste it in the (conversations-> url) field of actions.json
 
@@ -103,7 +105,7 @@ Note the Forwarding https URL.
    ```bash
    ./gactions update --action_package actions.json --project <project_id>
    ```
-1. To use the update argument, you must use your Action's Project ID. You can get your project ID by clicking the settings gear settings in your Actions on Google project followed by Project Settings.
+1. To use the update argument, you must use your Action's Project ID. You can get your project ID by clicking the settings gear in your Actions on Google project, followed by Project Settings.
 
 1. The first time you run this command you will be given a URL and be asked to sign in. Copy the URL and paste it into a browser (this can be done on any system). The page will ask you to sign in to your Google account. Sign into the Google account that created the project in a previous step.
 
@@ -129,4 +131,6 @@ Note the Forwarding https URL.
 1. Give other commands according to training phrases in each intent to test the respective intents.
 
 
-NOTE: This method will only work if gactions has update command option.   
+NOTE: 
+1. This method will only work if gactions has update command option.
+1. Requires cloud permission, if node version is '10'
