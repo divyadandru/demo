@@ -14,6 +14,7 @@ Requires gactions to have the command options:
 * gactions test...
 
 NOTE: This is the official method given by documentation after device registration.
+Object_Recogniser and cameraActions containers will be required in all methods by default. Current process is for building assistant container.
 
 ## Resources
 1. [Register custom Device actions](https://developers.google.com/assistant/sdk/guides/service/python/extend/custom-actions)
