@@ -129,7 +129,7 @@ Note the Forwarding https URL.
    
 1. Go to actions console -> TEST
 
-1. Give command "talk to my test app" or "talk to <invocation name>"
+1. Give command "talk to my test app" or "talk to <invocation_name>"
 
 1. Give other commands according to training phrases in each intent to test the respective intents.
 
