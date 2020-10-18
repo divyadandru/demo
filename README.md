@@ -1,4 +1,4 @@
-### Method 1-
+### Method 1: 
 Previously, in the flask assistant, we wrote the assistant(webhook) using flask_assistant package. However, for the assistant to work, we had to manually create intents/entities in the Dialogflow interface, to which the assistant reply. The assistant.py(webhook) contains only the implementation of how the assistant reply/reacts to a intent activated by a command given by the user.
 
 This method can be built upon the Flask assistant, where instead of manually creating intents and entities and other features in Dialogflow. actions.json file can be written, where we describe the creation of intents/entities/other features in dialogflow. If we do "gactions update..." on this actions.json file, all the intents and other features will be updated automatically. 
