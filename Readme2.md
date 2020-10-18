@@ -50,7 +50,7 @@ NOTE: Object_Recogniser and cameraActions containers will be required in all met
    
 1. Based on whether it is typscript or javascript and whether you want to manually create intents in dialogflow or push them via actions console, the import statements will change. Make sure to do the right imports.
    
-   index.ts(typscript) and manually create intents in dialogflow (hence no need to create in actions.json)
+   * index.ts(typscript) and manually create intents in dialogflow (hence no need to create in actions.json)
    ```bash
    import * as functions from 'firebase-functions';
    import { dialogflow, SimpleResponse, BasicCard, Button/**, other imports**/ } from 'actions-on-google';
@@ -58,7 +58,7 @@ NOTE: Object_Recogniser and cameraActions containers will be required in all met
    const app = dialogflow({ debug: true});
    ```
    
-   index.ts and create intents via actions.json
+   * index.ts and create intents via actions.json
    ```bash
    import * as functions from 'firebase-functions';
    import { actionssdk/**, other imports**/ } from 'actions-on-google';
@@ -66,7 +66,7 @@ NOTE: Object_Recogniser and cameraActions containers will be required in all met
    const app = actionssdk({ debug: true});
    ```
    
-   index.js and manually create intents in dialogflow (hence no need to create in actions.json)
+   * index.js and manually create intents in dialogflow (hence no need to create in actions.json)
    ```bash
    const { dialogflow } = require('actions-on-google');
    const functions = require('firebase-functions');
@@ -74,14 +74,14 @@ NOTE: Object_Recogniser and cameraActions containers will be required in all met
    const app = dialogflow({debug: true});
    ```
 
-   index.js and and create intents via actions.json
+   * index.js and and create intents via actions.json
    ```bash
    const { actionssdk } = require('actions-on-google');
    const functions = require('firebase-functions');
    
    const app = actionssdk({ debug: true});
    ```
-In place of actionssdk(actions.json) you can also use. (actions.json file is required here)
+   * In place of actionssdk(actions.json) you can also use. (actions.json file is required here)
    ```bash
    const { conversation } = require('@assistant/conversation');
    const functions = require('firebase-functions');
