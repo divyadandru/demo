@@ -4,6 +4,15 @@ Using firebase functions.
   1. Or typscript
   
  The overall method is same. The syntax to write code in typescript(index.ts) and javascript(index.js) may or may not vary.
+ 
+ Requires gactions to have the command options: 
+ 
+ * gactions update...
+
+* gactions test...
+
+NOTE: 
+Object_Recogniser and cameraActions containers will be required in all methods by default. Current process is for building assistant container.
 
 ## Resources
 1. [Google Assistant Quick Start for Developers](https://www.youtube.com/watch?v=WZY_in9oAjA)
