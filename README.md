@@ -9,9 +9,9 @@ Basically, actions.json is like a backend version of actions console UI.
 
 Requires gactions to have the command options: 
 
-gactions update....
+* gactions update...
 
-gactions test...
+* gactions test...
 
 NOTE: This is the official method given by documentation after device registration.
 
@@ -22,20 +22,81 @@ NOTE: This is the official method given by documentation after device registrati
 
 1. [Building with Actions SDK](https://developers.google.com/assistant/conversational/df-asdk/actions-sdk/define-actions)
 
-1. [gactions steps] (https://developers.google.com/assistant/conversational/df-asdk/actions-sdk/gactions-cli)
+1. [gactions steps](https://developers.google.com/assistant/conversational/df-asdk/actions-sdk/gactions-cli)
 
-1. [Building Google Assistant Apps with Python Demo| Paul Bailey @ PyBay2018] (https://www.youtube.com/watch?v=5eRxMyf_2Rc)
+1. [Building Google Assistant Apps with Python Demo| Paul Bailey @ PyBay2018](https://www.youtube.com/watch?v=5eRxMyf_2Rc)
+
+## Server Setup
+
+This Assistant will use ngrok to quickly provide a public URL for the flask-assistant webhook. This is required for Dialogflow to communicate with the assistant app.
+
+#### **ngrok**
+
+Install ngrok from [install guide](https://dashboard.ngrok.com/get-started/setup) for Mac OS. 
 
 
+Then, enter the following commands.
+
+```bash
+unzip /path/to/ngrok.zip
+```
+
+```bash
+./ngrok authtoken 1iK0ofMlVmYeN0zIp1kTa0WouPD_5njYQVBzD9NxWMDrRRet4
+```
+
+Once ngrok is installed, in the project directory's terminal enter
+
+```bash
+./ngrok http 5000
+```
+
+The server will start. A status message similiar to the one below will be shown. Keep this terminal open.
+
+```bash
+ngrok by @inconshreveable                                                                
+
+Session Status                online
+Version                       2.1.18
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://1ba714e7.ngrok.io -> localhost:5000
+Forwarding                    https://1ba714e7.ngrok.io -> localhost:5000
+```
+Note the Forwarding https URL.
+
+* https://1ba714e7.ngrok.io in the above example.
+
+* This is the URL that will be used as the Webhook URL in the actions.json(which will build dialog flow) as described below.
+
+* URL needs to be changed in actions.json every time the server is started. 
 
 ## Steps
 
-1. Create a new project in actions console
+1. Create a new project in actions console.
 
-1. [Device registration](https://developers.google.com/assistant/sdk/guides/service/python)
+1. Complete [Device registration](https://developers.google.com/assistant/sdk/guides/service/python)
 
-1. create actions.json using the above mentioned resources. (Or can edit a sample axtions.json file)
+1. In the project directory, create actions.json using the above mentioned resources. (Or can edit a sample actions.json file)
 
-1. Make sure to start actions.json from manifest. Check the example given [here](https://developers.google.com/assistant/sdk/guides/service/python/extend/custom-actions)
+1. Make sure to start writting actions.json from manifest. Check the example given [here](https://developers.google.com/assistant/sdk/guides/service/python/extend/custom-actions)
 
-1. create webhook.py(any_name.py) which will contain how the assistant responds to the different activated intent based on user command. webhook.py will be same for all methods
+1. Next, in the project directory, create webhook.py(any_name.py) which will contain how the assistant responds to the different activated intent based on user command. (webhook.py or the fulfillment will be same for all methods if the intent names are constant)
+
+1. Start the ngrok server, if not already started.
+
+        ```bash
+        ./ngrok http 5000
+         ```
+1. Copy the forwarding https url, and paste it in the (conversations-> url) field of actions.json
+
+        ```
+            "conversations": {
+                "face-recogniser": {
+                    "name": "face-recogniser",
+                    "url": " https://e62f57e859a3.ngrok.io",
+                    "fulfillmentApiVersion": 2
+                }
+            },
+         ```
+
