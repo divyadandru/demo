@@ -14,6 +14,10 @@ Using firebase functions.
 
 1. [gactions steps](https://developers.google.com/assistant/conversational/df-asdk/actions-sdk/gactions-cli)
 
+1. [Gactions and Firebase Setup] (https://developers.google.com/assistant/conversational/quickstart)
+
+1. [gactions CLI](https://developers.google.com/assistant/actionssdk/gactions)
+
 NOTE: Object_Recogniser and cameraActions containers will be required in all methods by default. Current process is for building assistant container.
 
 ## Steps
