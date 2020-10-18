@@ -79,7 +79,7 @@ Note the Forwarding https URL.
 
 1. Complete [Device registration](https://developers.google.com/assistant/sdk/guides/service/python)
 
-1. You can create the intents manually in Dialog flow, otherwise create a new empty project directory, in the project directory, you can create actions.json which can be pushed to the actions console by gactins command.
+1. You can create the intents manually in Dialog flow, otherwise in the project directory on the system, you can code the actions by creating actions.json, which can then be pushed to the actions console by gactins command.
 
 1. If you are creating intents using actions.json then create it using the above mentioned resources. (Or can edit a sample actions.json file)
 
