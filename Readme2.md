@@ -26,7 +26,7 @@ NOTE: Object_Recogniser and cameraActions containers will be required in all met
 
 1. Complete [Device registration](https://developers.google.com/assistant/sdk/guides/service/python)
 
-1. You can create the intents manually in Dialog flow, otherwise create a new empty project directory, in the project directory, you can create actions.json which can be pushed to the actions console by gactins command.
+1. You can create the intents manually in Dialog flow, otherwise in the project directory on the system, you can code the actions by creating actions.json, which can then be pushed to the actions console by gactins command.
 
 1. [What's the difference between ActionsSdkApp and DialogflowApp for Google Assistant?](https://stackoverflow.com/questions/47876438/whats-the-difference-between-actionssdkapp-and-dialogflowapp-for-google-assista/47876688)
 
