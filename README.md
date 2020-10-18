@@ -35,8 +35,7 @@ This Assistant will use ngrok to quickly provide a public URL for the flask-assi
 Install ngrok from [install guide](https://dashboard.ngrok.com/get-started/setup) for Mac OS. 
 
 
-Then, enter the following commands.
-
+Then, enter the following commands
 ```bash
 unzip /path/to/ngrok.zip
 ```
@@ -85,18 +84,49 @@ Note the Forwarding https URL.
 
 1. Start the ngrok server, if not already started.
 
-        ```bash
-        ./ngrok http 5000
-         ```
+    ```bash
+    1../ngrok http 5000
+    ```
 1. Copy the forwarding https url, and paste it in the (conversations-> url) field of actions.json
 
-        ```
-            "conversations": {
-                "face-recogniser": {
-                    "name": "face-recogniser",
-                    "url": " https://e62f57e859a3.ngrok.io",
-                    "fulfillmentApiVersion": 2
-                }
-            },
-         ```
+    ```
+    "conversations": {
+        "face-recogniser": {
+            "name": "face-recogniser",
+            "url": " https://e62f57e859a3.ngrok.io",
+            "fulfillmentApiVersion": 2
+        }
+    },
+    ```
+1. Save your Action package to Google by using the gactions CLI. Replace project_id with your Actions Console project ID
 
+   ```bash
+   ./gactions update --action_package actions.json --project <project_id>
+   ```
+1. To use the update argument, you must use your Action's Project ID. You can get your project ID by clicking the settings gear settings in your Actions on Google project followed by Project Settings.
+
+1. The first time you run this command you will be given a URL and be asked to sign in. Copy the URL and paste it into a browser (this can be done on any system). The page will ask you to sign in to your Google account. Sign into the Google account that created the project in a previous step.
+
+   ```bash
+   Enter the authorization code:
+   ```
+   If authorization was successful, you will see a response similar to the following:
+   ```bash
+   Your app for the Assistant for project my-devices-project was successfully
+   updated with your actions.
+   ```
+1. Open Actions console, you will notice before there were no actions but now there are, which has happened due to pushing of actions.json by "gactions update..." command(due to above command)
+
+1. Return to the project directory, in the terminal, run your webhook.py(application)
+   ```bash
+   python3 webhook.py
+   ```
+   
+1. Go to actions console -> TEST
+
+1. Give command "talk to my test app" or "talk to <invocation name>"
+        
+1. Give other commands according to training phrases in each intent to test the respective intents.
+
+
+NOTE: This method will only work if gactions has update command option.   
