@@ -3,7 +3,7 @@ Using firebase functions.
   1. Either javascript
   1. Or typscript
   
- The overall method is same. The code in typescript(index.ts) and javascript(index.js) may or may not vary between each other
+ The overall method is same. The syntax to write code in typescript(index.ts) and javascript(index.js) may or may not vary.
 
 ## Resources
 1. [Google Assistant Quick Start for Developers](https://www.youtube.com/watch?v=WZY_in9oAjA)
