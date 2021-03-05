@@ -15,7 +15,7 @@
 | 7     | input_file_path            | str        | False   | "absolute path to csv report"                                  |                  
 | 8     | input_bucket_name          | str        | False   | "input bucket name"                                            |
 | 9     | output_path                | str        | False   | "absolute path where the modified file will be stored"         |
-| 10    | input_datastore_parameters | json.loads | False   | "parameters required to retrieve from data store"              |                  
+| 10    | input_datastore_key_names | json.loads | False   | "parameters required to retrieve from data store"              |                  
 | 11    | additional_dag_params      | json.loads | False   | "additional dag params"                                        |
 | 12    | output_path_params         | json.loads | False   | "parameters to build output path where file will be stored"    |
 | 13    | file_name_params           | json.loads | False   | parameters to build output file name where file will be stored"|                  
@@ -79,19 +79,19 @@ input_file_format_details = {
 filter_map_1 = {"dag_id": dag.dag_id, "run_id": '{{run_id}}',
                 'airflow_task_id': dw_task_id, 'dag_start_date': dag_start_date}
 
-input_bucket_field_name = 'output_bucket_name'
-input_path_field_name = 'gcs_output_file_path'
-report_start_date_field_name = 'report_start_date'
-report_end_date_field_name = 'report_end_date'
+key_in_datastore_for_input_bucket = 'output_bucket_name'
+key_in_datastore_for_input_path = 'gcs_output_file_path'
+key_in_datastore_for_report_start_date = 'report_start_date'
+key_in_datestore_for_report_end_date = 'report_end_date'
 
-input_datastore_parameters = {
+input_datastore_key_names = {
     'kind': 'ReportDownloadTask',
     'filter_map': filter_map_1,
-    'datastore_field_names': {
-                              'input_bucket': input_bucket_field_name,
-                              'input_path': input_path_field_name,
-                              'report_start_date': report_start_date_field_name,
-                              'report_end_date': report_end_date_field_name,
+    'datastore_key_names': {
+                              'input_bucket': key_in_datastore_for_input_bucket,
+                              'input_path': key_in_datastore_for_input_path,
+                              'report_start_date': key_in_datastore_for_report_start_date,
+                              'report_end_date': key_in_datestore_for_report_end_date,
                               }
 }
 
@@ -124,8 +124,8 @@ params ={
             "delimiter": args.input_file_format_details['delimiter'],
             "header": args.input_file_format_details['header'],
             "file_format": args.input_file_format_details['file_format'],
-            "filter_map": args.input_datastore_parameters['filter_map'],
-            "kind": args.input_datastore_parameters['kind'],
+            "filter_map": args.input_datastore_key_names['filter_map'],
+            "kind": args.input_datastore_key_names['kind'],
             "report_start_date": args.report_start_date,
             "report_end_date": args.report_end_date,
             "skip_datastore": args.skip_datastore,
@@ -141,15 +141,15 @@ Returns params
 
 **Updates the params dictionary**
 
-If a parameter value is not passed as a dag parameter, and the field names are passed to fetch from datastore using **args.input_datastore_parameters['datastore_field_names']** then the key’s value will be updated and also a new key-value pair will be created if not already present.
+If a parameter value is not passed as a dag parameter, and the field names are passed to fetch from datastore using **args.input_datastore_key_names['datastore_key_names']** then the key’s value will be updated and also a new key-value pair will be created if not already present.
 
-      if args.input_datastore_parameters is provided  and  params['skip_datastore'] = False
+      if args.input_datastore_key_names is provided  and  params['skip_datastore'] = False
 
           get the task entry
 
-          for key in args.input_datastore_parameters['datastore_field_names'].keys():
+          for key in args.input_datastore_key_names['datastore_key_names'].keys():
 
-              params[key] = entry[args.input_datastore_parameters['datastore_field_names'][key]]
+              params[key] = entry[args.input_datastore_key_names['datastore_key_names'][key]]
 
 Returns updated params
 
@@ -170,7 +170,11 @@ Returns updated params
 	        Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
 
 
-### STEP 4: Construct local output file path (using constant local file name- not dependent on user input)
+### STEP 4: Construct local output file path (using constant local file name)
+```bash
+constant.local_output_file_name = 'dropped_row_report.csv'
+local_output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), constant.local_output_file_name)
+```
 
 
 ### STEP 5: Dropping rows- read the locally downloaded file, drop the rows based on the params[‘encoding’] and params[‘delimiter’]
