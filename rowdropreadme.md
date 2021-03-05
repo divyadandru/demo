@@ -15,7 +15,7 @@
 | 7     | input_file_path            | str        | False   | "absolute path to csv report"                                  |                  
 | 8     | input_bucket_name          | str        | False   | "input bucket name"                                            |
 | 9     | output_path                | str        | False   | "absolute path where the modified file will be stored"         |
-| 10    | input_datastore_key_names | json.loads | False   | "parameters required to retrieve from data store"              |                  
+| 10    | input_datastore_key_names  | json.loads | False   | "parameters required to retrieve from data store"              |                  
 | 11    | additional_dag_params      | json.loads | False   | "additional dag params"                                        |
 | 12    | output_path_params         | json.loads | False   | "parameters to build output path where file will be stored"    |
 | 13    | file_name_params           | json.loads | False   | parameters to build output file name where file will be stored"|                  
@@ -186,9 +186,13 @@ Returns row count
 
 ### STEP 6: Build gcs output file path - get_output_file_path
 
-output_file_name = None
+Calls **get_output_file_name**
 
-If args.file_name_params is provided then build the output_file_name and assign it to the above variable
+	output_file_name = None
+
+	If args.file_name_params is provided then build the output_file_name and assign it to the above variable output_file_name
+
+	Return output_file_name to **get_output_file_path** method
 
  * **Case 1** if params['output_path'] is is not None i.e args.output_path is provided:
  
