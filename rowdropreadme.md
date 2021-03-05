@@ -173,6 +173,7 @@ Returns updated params
 ### STEP 4: Construct local output file path (using constant local file name)
 ```bash
 constant.local_output_file_name = 'dropped_row_report.csv'
+
 local_output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), constant.local_output_file_name)
 ```
 
