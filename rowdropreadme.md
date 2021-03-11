@@ -133,11 +133,11 @@ additional_dag_params = {
 
 ### STEP 1: Store into params- `set_params_by_args` method
 
-Sets the params dictionary based on the directly passed dag parameters
+Sets the `params` dictionary based on the directly passed dag parameters
 
-Will return params (a dictionary), with key- value pairs, where key is parameter name and the value is the corresponding value passed directly via dag parameter
+Will return `params` (a dictionary), with key- value pairs, where key is parameter name and the value is the corresponding value passed directly via dag parameter
 
-If a parameter value is not passed as dag parameter, then in the corresponding key value pair- the value will be None, which will be updated in next step if available in datastore
+If a parameter value is not passed as standard dag parameter for which key is already present in params, then in the corresponding key value pair- the value will be `None`, which will be updated in next step if available in datastore
 
 ```bash
 params ={'dag_id': args.dag_id,
@@ -171,23 +171,23 @@ params ={'dag_id': args.dag_id,
 
 Returns `params`
 
-### STEP 2: fetch_and_store_datastore_arguments
+### STEP 2: `set_params_by_additional_dag_params`
 
-**Updates the params dictionary**
+**Updates the `params` dictionary**
 
 If a parameter value is not passed as a standard dag parameter, and passed as one of the `args.additional_dag_params`, then params dictionary key-value pairs are updated.
 
 Returns updated `params`
 
-### STEP 3: fetch_and_store_datastore_arguments
+### STEP 3: `fetch_and_store_datastore_arguments`
 
-If a parameter value is neither passed as a standard dag parameter nor as in `args.additional_dag_params`, and if the datastore key names are passed to fetch from datastore using  `args.input_from_datastore['fetch_datastore_params']`. 
+If a parameter value is neither passed as a standard dag parameter nor as in `args.additional_dag_params`, check if the datastore key names are passed to fetch from datastore using  `args.input_from_datastore['fetch_datastore_params']`. 
 
-Then the datastore keys are used to fetch the values from the datastore, and the key’s value will be updated in `params` dictionary and also a new key-value pair will be created if not already present.
+If provided the datastore keys are used to fetch the values from the datastore, and the key’s value will be updated in `params` dictionary and if corresponding key is not already present a new key-value pair will be created .
 
 ***3.1. get the task entry***
 
-Get the list of entries based on the `filter_ma`p and `kind`
+Get the list of entries based on the `filter_map` and `kind`
 
 Sort the obtained list of entries based on the `order_task_entries_params[‘order_by_key_list’]` and `order_task_entries_params[‘descending_order’]`, where `order_task_entries_params` is passed as a nested json object in `args.input_from_datastore` from the dag
 
@@ -209,9 +209,9 @@ Note:
 
 `order_task_entries_params[‘order_by_key_list’]`: should be a list object of keys on which the entries will be sorted
 
-`order_task_entries_params[‘descending_order’]`: takes value True or False
+`order_task_entries_params[‘descending_order’]`: takes value `True` or `False`
 
-***3.2. Update the params dictionary***
+***3.2. Update the `params` dictionary***
 
     if params[‘input_from_datastore’] is not None  and  params['skip_datastore'] = False
     		
@@ -245,9 +245,11 @@ Returns updated `params`
 ### STEP 5: Construct local output file path (using constant local file name)
 
 ```bash
+
 constant.local_output_file_name = 'dropped_row_report.csv'
 
 local_output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), constant.local_output_file_name)
+
 ```
 
 
@@ -258,9 +260,9 @@ Use `csv.writer` to write the required rows based on `params['drop_top']` and `p
 Returns `row_count`
 
 
-### STEP 7: Build gcs output file path - get_output_file_path
+### STEP 7: Build gcs output file path - `get_output_file_path`
 
-Calls **get_output_file_name**
+Calls **`get_output_file_name`**
 
 	output_file_name = None
 
@@ -268,17 +270,17 @@ Calls **get_output_file_name**
 	    then build the output_file_name 
 	    assign it to the above variable output_file_name
 
-Build output_file_name based on params[‘file_name_params’] and params[‘additional_dag_params’]
- ( fail if any of the element in file_name_params does not exist in keys of  params[‘additional_dag_params’])     
+Build o`utput_file_name` based on `params[‘file_name_params’]` and `params[‘additional_dag_params’]`
+
+(fail if any of the element in `file_name_params` does not exist in keys of `params[‘additional_dag_params’]`)     
     
+Return `output_file_name` to **`get_output_file_path`** method
 
-Return output_file_name to **get_output_file_path** method
+Return to `get_output_file_path` method
 
-Return to get_output_file_path method
+In **`get_output_file_path`** method
 
-In **get_output_file_path** method
-
- * **Case 1** if params['output_path'] is is not None i.e args.output_path is provided:
+ * **Case 1** if `params['output_path']` is is not `None` i.e `args.output_path` is provided:
  
    * **Case 1.1** 
   
@@ -297,12 +299,11 @@ In **get_output_file_path** method
 
 * **Case 2** 
 
- if params[‘output_path’] is not None i.e. args.output_path is not provided, check if params[‘output_path_params’] is not None i.e. args.output_path_params
-is provided
+ if `params[‘output_path’]` is not `None` i.e. `args.output_path` is not provided, check if `params[‘output_path_params’]` is not `None` i.e. `args.output_path_params` is provided
 
-Build output path based on params[‘output_path_params’] and params[‘additional_dag_params’]
+Build output path based on `params[‘output_path_params’]` and `params[‘additional_dag_params’]`
 
-( fail if any of the element in params[‘output_path_params’] does not exist in keys of  params[‘additional_dag_params’]) 
+( fail if any of the element in `params[‘output_path_params’]` does not exist in keys of `params[‘additional_dag_params’]`) 
 
           output_path = os.path.join(output_path, 'row_drop')
 
@@ -322,9 +323,9 @@ Build output path based on params[‘output_path_params’] and params[‘additi
         
 * **Case 3**
  
-  If params[‘output_path’] is None and params[output_path_params] is None: 
+  If `params[‘output_path’]` is `None` and `params[output_path_params]` is `None`: 
   
-  i.e. neither args.output_path nor args.output_path_params is provided. Then consider a default output_path
+  i.e. neither `args.output_path` nor `args.output_path_params` is provided. Then consider a default `output_path`
 
 
           output_path = '{}/{}/row_drop.csv'.format(params['dag_id'], params['run_id'])
@@ -345,43 +346,43 @@ Build output path based on params[‘output_path_params’] and params[‘additi
           Raise exception("output_bucket_name is None")
 
 
-### STEP 9: Datastore: if args.skip_datastore is false
+### STEP 9: Datastore: if `args.skip_datastore` is false
 
 **handle_row_drop_task**
 
-handle_row_drop_task method checks if the datastore entry for the given filter value is available or not. 
+`handle_row_drop_task` method checks if the datastore entry for the given filter value is available or not. 
 
 If the entry is already present then it will update the existing entry, else create a new entry and store it to a given Entity. 
 
-Finally Calls put_snapshot_task_entry
+Finally Calls `put_snapshot_task_entry`
 
 **put_snapshot_task_entry**
 
-Stores all the key- value pairs present in updated params dictionary
+Stores all the key- value pairs present in updated `params` dictionary
 
-1. dag_id          
-1. run_id
-1. output_bucket
-1. drop_top
-1. drop_bot
-1. airflow_task_id
-1. input_path
-1. input_bucket
-1. output_path
-1. encoding
-1. delimiter
-1. header           
-1. file_format
-1. skip_datastore
-1. input_from_datastore
-1. additional_dag_params 
-1. output_path_params
-1. file_name_params
-1. input_file_format_details
-1. row_count
-1. exceptions
-1. exception_details
-1. modified_at
-1. created_at
+1. `dag_id`          
+1. `run_id`
+1. `output_bucket`
+1. `drop_top`
+1. `drop_bot`
+1. `airflow_task_id`
+1. `input_path`
+1. `input_bucket`
+1. `output_path`
+1. `encoding`
+1. `delimiter`
+1. `header`           
+1. `file_format`
+1. `skip_datastore`
+1. `input_from_datastore`
+1. `additional_dag_params` 
+1. `output_path_params`
+1. `file_name_params`
+1. `input_file_format_details`
+1. `row_count`
+1. `exceptions`
+1. `exception_details`
+1. `modified_at`
+1. `created_at`
 
-Additionally stores all the values fetched from datastore and all the key-value pairs passed in additional_dag_params seperately
+Additionally stores all the values fetched from datastore and all the key-value pairs passed in `additional_dag_params` seperately
