@@ -1,14 +1,14 @@
-# containers/row_drop_automation
-#### Row Drop Container- Based on the input parsed arguments, the row drop container downloads to local the file from gcs input path, drops the top and/or the bottom rows of the file, and uploads the modified file to the gcs output path.
+# row_drop_automation
+**Row Drop Container**- Based on the input parsed arguments, the row drop container downloads to local the file from gcs input path, drops the top and/or the bottom rows of the file, and uploads the modified file to the gcs output path.
 
-**row drop container path** = "./cp-saa-external-sales/containers/row_drop_automation"
+**row drop container path** = "./airflow-containers/row_drop_automation"
 
 
 | s. no | parsed argument            | type       | required| help                                                           | default                                   |
 | ----- | ---------------------------| -----------| --------| ---------------------------------------------------------------|-------------------------------------------
 | 1     | dag_id                     | str        | True    | "dag id to query data from datastore"                          |                                           
 | 2     | run_id                     | str        | True    | "run id of the dag"                                            |                     
-| 3     | output_bucket.             | str        | True    | "output bucket name to store the modified file"                |
+| 3     | output_bucket              | str        | True    | "output bucket name to store the modified file"                |
 | 4     | drop_top                   | str        | True    | "number of rows to drop from the top of the file"              |                  
 | 5     | drop_bot                   | str        | True    | "number of rows to drop from the bottom of the file"           |
 | 6     | airflow_task_id            | str        | True    | "airflow task id"                                              |
