@@ -8,17 +8,17 @@
 | ----- | ---------------------------| -----------| --------| ---------------------------------------------------------------|-------------------------------------------
 | 1     | dag_id                     | str        | True    | "dag id to query data from datastore"                          |                                           
 | 2     | run_id                     | str        | True    | "run id of the dag"                                            |                     
-| 3     | output_bucket_name         | str        | True    | "output bucket name to store the modified file"                |
+| 3     | output_bucket.             | str        | True    | "output bucket name to store the modified file"                |
 | 4     | drop_top                   | str        | True    | "number of rows to drop from the top of the file"              |                  
 | 5     | drop_bot                   | str        | True    | "number of rows to drop from the bottom of the file"           |
-| 6     | airflow_task_id            | str        | False   | "airflow task id"                                              |
-| 7     | input_file_path            | str        | False   | "absolute path to csv report"                                  |                  
-| 8     | input_bucket_name          | str        | False   | "input bucket name"                                            |
+| 6     | airflow_task_id            | str        | True    | "airflow task id"                                              |
+| 7     | input_path                 | str        | False   | "absolute path to csv report"                                  |                  
+| 8     | input_bucket.              | str        | False   | "input bucket name"                                            |
 | 9     | output_path                | str        | False   | "absolute path where the modified file will be stored"         |
-| 10    | input_from_datastore       | json.loads | False   | "parameters required to retrieve from data store"              |                  
+| 10    | input_from_datastore       | json.loads | False   | "keys required to retrieve corresponding values from data store"|                  
 | 11    | additional_dag_params      | json.loads | False   | "additional dag params"                                        |
-| 12    | output_path_params         | json.loads | False   | "parameters to build output path where file will be stored"    |
-| 13    | file_name_params           | json.loads | False   | parameters to build output file name where file will be stored"|                  
+| 12    | output_path_params         | json.loads | False   | "parameters to build gcs output path where file will be stored"|
+| 13    | file_name_params           | json.loads | False   | "parameters to build output file name where file will be stored"|                  
 | 14    | input_file_format_details  | json.loads | False   | "parameters related to input file format"                      | json.dumps(constant.input_file_format_details)**
 | 15    | skip_datastore             | str        | False   | "Whether to use data store or not"                             | False
 
