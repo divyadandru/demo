@@ -1,7 +1,7 @@
 # row_drop_automation
 **Row Drop Container**- Based on the input parsed arguments, the row drop container downloads to local the file from gcs input path, drops the top and/or the bottom rows of the file, and uploads the modified file to the gcs output path.
 
-**row drop container path** = "./airflow-containers/row_drop_automation"
+**row drop container path** = `"./airflow-containers/row_drop_automation"`
 
 
 | s. no | parsed argument            | type       | required| help                                                           | default                                   |
