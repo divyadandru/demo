@@ -183,7 +183,9 @@ Returns updated `params`
 
 If a parameter value is neither passed as a standard dag parameter nor as in `args.additional_dag_params`, check if the datastore key names are passed to fetch from datastore using  `args.input_from_datastore['fetch_datastore_params']`. 
 
-If provided the datastore keys are used to fetch the values from the datastore, and the key’s value will be updated in `params` dictionary and if corresponding key is not already present a new key-value pair will be created .
+If the above is provided, the datastore keys are used to fetch the values from the datastore, and the key’s value will be updated in `params` dictionary and if corresponding key is not already present a new key-value pair will be created.
+
+Returns updated `params`
 
 ***3.1. get the task entry***
 
