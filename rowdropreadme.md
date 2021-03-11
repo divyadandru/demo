@@ -73,7 +73,6 @@ key_in_datastore_for_input_path = 'gcs_output_file_path'
 key_in_datastore_for_report_start_date = 'report_start_date'
 key_in_datestore_for_report_end_date = 'report_end_date'
 
-
 input_from_datastore = {
     'kind': 'ReportDownloadTask',
     'filter_map': filter_map_1,
@@ -82,14 +81,16 @@ input_from_datastore = {
                                'report_start_date': key_in_datastore_for_report_start_date,
                                'report_end_date': key_in_datestore_for_report_end_date,
                                'schema': key_in_datestore_for_schema
-		       ‘dag_start_date’: key_in_datestore_for_dag_start_date
+		       	       'dag_start_date': key_in_datestore_for_dag_start_date
                                }
     ‘order_task_entries_params’ = {
     			'order_by_key_list': ['dag_start_date'],
-   			 'descending_order': True
+   			'descending_order': True
+}
 }
 
-}
+NOTE: 
+input_from_datastore: key value pairs where key refers to what is to be fetched from datastore and value is the corresponding key in datastore.
 
 
 additional_dag_params = {
@@ -107,7 +108,7 @@ additional_dag_params = {
 
 or
 
-If not fetching from datastore(args.input_from_datastore is None) can pass directly as additional dag params
+If not fetching from datastore(args.input_from_datastore is None), user can pass all the non standard dag parameters in additional_dag_params json object 
 
 additional_dag_params = {
     'retailer': retailer,
@@ -133,11 +134,11 @@ additional_dag_params = {
 
 ### STEP 1: Store into params- `set_params_by_args` method
 
-Sets the `params` dictionary based on the directly passed dag parameters
+Sets the `params` dictionary based on the directly passed standard dag parameters
 
-Will return `params` (a dictionary), with key- value pairs, where key is parameter name and the value is the corresponding value passed directly via dag parameter
+Will return `params` (a dictionary), with key-value pairs, where key is parameter name and the value is the corresponding value passed directly via dag parameter
 
-If a parameter value is not passed as standard dag parameter for which key is already present in params, then in the corresponding key value pair- the value will be `None`, which will be updated in next step if available in datastore
+If a parameter value is not passed as standard dag parameter for which key is already present in params, then in the corresponding key value pair- the value will be `None`. It will be updated in next steps if available in datastore or passed via additional dag params
 
 ```bash
 params ={'dag_id': args.dag_id,
@@ -175,23 +176,23 @@ Returns `params`
 
 **Updates the `params` dictionary**
 
-If a parameter value is not passed as a standard dag parameter, and passed as one of the `args.additional_dag_params`, then params dictionary key-value pairs are updated.
+If a parameter value is not passed as a standard dag parameter, and passed as one of the `args.additional_dag_params`, then the corresponding key-value pairs in `params` dictionary are updated.
 
 Returns updated `params`
 
 ### STEP 3: `fetch_and_store_datastore_arguments`
 
-If a parameter value is neither passed as a standard dag parameter nor as in `args.additional_dag_params`, check if the datastore key names are passed to fetch from datastore using  `args.input_from_datastore['fetch_datastore_params']`. 
+If a parameter value is neither passed as a standard dag parameter nor  in `args.additional_dag_params`, check if the datastore key names are passed using `args.input_from_datastore['fetch_datastore_params']` inorder to fetch from datastore. 
 
-If the above is provided, the datastore keys are used to fetch the values from the datastore, and the key’s value will be updated in `params` dictionary and if corresponding key is not already present a new key-value pair will be created.
+If the above is provided, the datastore key names in `args.input_from_datastore['fetch_datastore_params']` are used to fetch the values from the datastore, and the corresponding key-value pairs will be updated in `params` dictionary (if corresponding key is not already present a new key-value pair will be created).
 
 Returns updated `params`
 
 ***3.1. get the task entry***
 
-Get the list of entries based on the `filter_map` and `kind`
+Get the list of task entries based on the `filter_map` and `kind`
 
-Sort the obtained list of entries based on the `order_task_entries_params[‘order_by_key_list’]` and `order_task_entries_params[‘descending_order’]`, where `order_task_entries_params` is passed as a nested json object in `args.input_from_datastore` from the dag
+If `order_task_entries_params` is not `None`, sort the obtained list of entries based on the `order_task_entries_params[‘order_by_key_list’]` and `order_task_entries_params[‘descending_order’]`, where `order_task_entries_params` is passed as a nested json object in `args.input_from_datastore` from the dag
 
     order_task_entries_params = args.input_from_datastore['order_task_entries_params']
     
@@ -213,6 +214,25 @@ Note:
 
 `order_task_entries_params[‘descending_order’]`: takes value `True` or `False`
 
+If there is no requirement of ordering the task_entries, do not include the key `order_task_entries_params` and its value nested json object at all in `input_from_datastore`.
+
+example: `args.input_from_datastore` example if ordering of task_entries is not required
+
+```bash
+
+input_from_datastore = {
+    'kind': 'ReportDownloadTask',
+    'filter_map': filter_map_1,
+    'fetch_datastore_params': {'input_bucket': key_in_datastore_for_input_bucket,
+                               'input_path': key_in_datastore_for_input_path,
+                               'report_start_date': key_in_datastore_for_report_start_date,
+                               'report_end_date': key_in_datestore_for_report_end_date,
+                               'schema': key_in_datestore_for_schema
+		       	       'dag_start_date': key_in_datestore_for_dag_start_date
+                               }
+}
+```
+
 ***3.2. Update the `params` dictionary***
 
     if params[‘input_from_datastore’] is not None  and  params['skip_datastore'] = False
@@ -224,7 +244,7 @@ Note:
 
 Returns updated `params`
 
-`params` dictionary now contains all the parameters(standard_dag_parameters, additional_dag_parameters, parameters_fetched_from_datastore) in a single object. 
+`params` dictionary now contains all the parameters(standard_dag_parameters, additional_dag_parameters, parameters_fetched_from_datastore) required for row drop automation in a single object. 
 
 `params` will be used from here on.
 
@@ -254,7 +274,6 @@ local_output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__))
 
 ```
 
-
 ### STEP 6: Dropping rows- read the locally downloaded file, drop the rows based on the `params[‘encoding’]` and `params[‘delimiter’]`
 
 Use `csv.writer` to write the required rows based on `params['drop_top']` and `params['drop_bot']` number
@@ -269,10 +288,12 @@ Calls **`get_output_file_name`**
 	output_file_name = None
 
 	If params[‘file_name_params’] is not None i.e args.file_name_params 
-	    then build the output_file_name 
+	
+	    build the output_file_name 
+	    
 	    assign it to the above variable output_file_name
 
-Build o`utput_file_name` based on `params[‘file_name_params’]` and `params[‘additional_dag_params’]`
+Build `output_file_name` based on `params[‘file_name_params’]` and `params[‘additional_dag_params’]`
 
 (fail if any of the element in `file_name_params` does not exist in keys of `params[‘additional_dag_params’]`)     
     
@@ -288,9 +309,9 @@ In **`get_output_file_path`** method
   
          if output_file_name is not None:
       
-			       It means the provided output_path is not absolute path 
+             It means the provided output_path is not absolute path 
              
-			       Hence append the output_file_name also to the path
+	     Hence append the output_file_name also to the path
 	
    * **Case 1.2**
 
