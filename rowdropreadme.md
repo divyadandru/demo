@@ -6,23 +6,23 @@
 
 | s. no | parsed argument            | type       | required| help                                                           | default                                   |
 | ----- | ---------------------------| -----------| --------| ---------------------------------------------------------------|-------------------------------------------
-| 1     | dag_id                     | str        | True    | "dag id to query data from datastore"                          |                                           
-| 2     | run_id                     | str        | True    | "run id of the dag"                                            |                     
-| 3     | output_bucket              | str        | True    | "output bucket name to store the modified file"                |
-| 4     | drop_top                   | str        | True    | "number of rows to drop from the top of the file"              |                  
-| 5     | drop_bot                   | str        | True    | "number of rows to drop from the bottom of the file"           |
-| 6     | airflow_task_id            | str        | True    | "airflow task id"                                              |
-| 7     | input_path                 | str        | False   | "absolute path to csv report"                                  |                  
-| 8     | input_bucket.              | str        | False   | "input bucket name"                                            |
-| 9     | output_path                | str        | False   | "absolute path where the modified file will be stored"         |
-| 10    | input_from_datastore       | json.loads | False   | "keys required to retrieve corresponding values from data store"|                  
-| 11    | additional_dag_params      | json.loads | False   | "additional dag params"                                        |
-| 12    | output_path_params         | json.loads | False   | "parameters to build gcs output path where file will be stored"|
-| 13    | file_name_params           | json.loads | False   | "parameters to build output file name where file will be stored"|                  
-| 14    | input_file_format_details  | json.loads | False   | "parameters related to input file format"                      | json.dumps(constant.input_file_format_details)**
-| 15    | skip_datastore             | str        | False   | "Whether to use data store or not"                             | False
+| 1     | `dag_id`                   | str        | True    | "dag id to query data from datastore"                          |                                           
+| 2     | `run_id`                   | str        | True    | "run id of the dag"                                            |                     
+| 3     | `output_bucket`            | str        | True    | "output bucket name to store the modified file"                |
+| 4     | `drop_top`                 | str        | True    | "number of rows to drop from the top of the file"              |                  
+| 5     | `drop_bot`                 | str        | True    | "number of rows to drop from the bottom of the file"           |
+| 6     | `airflow_task_id`          | str        | True    | "airflow task id"                                              |
+| 7     | `input_path`               | str        | False   | "absolute path to csv report"                                  |                  
+| 8     | `input_bucket`             | str        | False   | "input bucket name"                                            |
+| 9     | `output_path`              | str        | False   | "absolute path where the modified file will be stored"         |
+| 10    | `input_from_datastore`     | json.loads | False   | "keys required to retrieve corresponding values from data store"|                  
+| 11    | `additional_dag_params`    | json.loads | False   | "additional dag params"                                        |
+| 12    | `output_path_params`       | json.loads | False   | "parameters to build gcs output path where file will be stored"|
+| 13    | `file_name_params`         | json.loads | False   | "parameters to build output file name where file will be stored"|                  
+| 14    | `input_file_format_details`| json.loads | False   | "parameters related to input file format"                      | json.dumps(constant.input_file_format_details)**
+| 15    | `skip_datastore`           | str        | False   | "Whether to use data store or not"                             | False
 
-** Default value of args.input_file_format_details
+** Default value of `args.input_file_format_details`
 ```bash
 input_file_format_details = {
         'delimiter': ',',
@@ -131,7 +131,7 @@ additional_dag_params = {
 
 ### Working of Row Drop container
 
-### STEP 1: Store into params- set_params_by_args method
+### STEP 1: Store into params- `set_params_by_args` method
 
 Sets the params dictionary based on the directly passed dag parameters
 
@@ -169,25 +169,27 @@ params ={'dag_id': args.dag_id,
 
 ```
 
-Returns params
+Returns `params`
 
 ### STEP 2: fetch_and_store_datastore_arguments
 
 **Updates the params dictionary**
 
-If a parameter value is not passed as a standard dag parameter, and passed as one of the additional_dag_params, then params dictionary key-value pairs are updated.
+If a parameter value is not passed as a standard dag parameter, and passed as one of the `args.additional_dag_params`, then params dictionary key-value pairs are updated.
+
+Returns updated `params`
 
 ### STEP 3: fetch_and_store_datastore_arguments
 
-If a parameter value is neither passed as a standard dag parameter nor as in additional_dag_params, and if the datastore key names are passed to fetch from datastore using  args.input_from_datastore['fetch_datastore_params']. 
+If a parameter value is neither passed as a standard dag parameter nor as in `args.additional_dag_params`, and if the datastore key names are passed to fetch from datastore using  `args.input_from_datastore['fetch_datastore_params']`. 
 
-Then the datastore keys are used to fetch from the datastore, and the key’s value will be updated in params dictionary and also a new key-value pair will be created if not already present.
+Then the datastore keys are used to fetch the values from the datastore, and the key’s value will be updated in `params` dictionary and also a new key-value pair will be created if not already present.
 
 ***3.1. get the task entry***
 
-Get the list of entries based on the filter_map and kind
+Get the list of entries based on the `filter_ma`p and `kind`
 
-Sort the obtained list of entries based on the order_task_entries_params[‘order_by_key_list’] and order_task_entries_params[‘descending_order’], where order_task_entries_params is passed as a nested json object in args.input_from_datastore from the dag
+Sort the obtained list of entries based on the `order_task_entries_params[‘order_by_key_list’]` and `order_task_entries_params[‘descending_order’]`, where `order_task_entries_params` is passed as a nested json object in `args.input_from_datastore` from the dag
 
     order_task_entries_params = args.input_from_datastore['order_task_entries_params']
     
@@ -205,9 +207,9 @@ Sort the obtained list of entries based on the order_task_entries_params[‘orde
 
 Note:
 
-order_task_entries_params[‘order_by_key_list’]: should be a list object of keys on which the entries will be sorted
+`order_task_entries_params[‘order_by_key_list’]`: should be a list object of keys on which the entries will be sorted
 
-order_task_entries_params[‘descending_order’]: takes value True or False
+`order_task_entries_params[‘descending_order’]`: takes value True or False
 
 ***3.2. Update the params dictionary***
 
@@ -218,11 +220,11 @@ order_task_entries_params[‘descending_order’]: takes value True or False
              params[key] = entry[params['input_from_datastore']['fetch_datastore_params'][key]]
 
 
-Returns updated params
+Returns updated `params`
 
-params dictionary now contains all the parameters(standard_dag_parameters, additional_dag_parameters, parameters_fetched_from_datastore) in a single object. 
+`params` dictionary now contains all the parameters(standard_dag_parameters, additional_dag_parameters, parameters_fetched_from_datastore) in a single object. 
 
-params will be used from here on.
+`params` will be used from here on.
 
 ### STEP 4: download the file from gcs to local
 
@@ -237,10 +239,11 @@ params will be used from here on.
 
       Else:
 
-	        Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
+	  Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
 
 
 ### STEP 5: Construct local output file path (using constant local file name)
+
 ```bash
 constant.local_output_file_name = 'dropped_row_report.csv'
 
@@ -248,11 +251,11 @@ local_output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__))
 ```
 
 
-### STEP 6: Dropping rows- read the locally downloaded file, drop the rows based on the params[‘encoding’] and params[‘delimiter’]
+### STEP 6: Dropping rows- read the locally downloaded file, drop the rows based on the `params[‘encoding’]` and `params[‘delimiter’]`
 
-Use csv.writer to write the required rows based on drop_top and drop_bot number
+Use `csv.writer` to write the required rows based on `params['drop_top']` and `params['drop_bot']` number
 
-Returns row count
+Returns `row_count`
 
 
 ### STEP 7: Build gcs output file path - get_output_file_path
