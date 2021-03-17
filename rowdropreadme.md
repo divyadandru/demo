@@ -207,13 +207,13 @@ If `order_task_entries_params` is not `None`, sort the obtained list of entries 
 
 Note:
 
-`order_task_entries_params[‘order_by_key_list’]`: should be a list object of keys on which the entries will be sorted
+`order_task_entries_params[‘order_by_key_list’]`: should be a list object of keys(names) on which the entries will be sorted eg: ['dag_start_date']
 
 `order_task_entries_params[‘descending_order’]`: takes value `True` or `False`
 
 If there is no requirement of ordering the task_entries, do not include the key `order_task_entries_params` and its value nested json object at all in `input_from_datastore`.
 
-example: `args.input_from_datastore` example if ordering of task_entries is not required
+example: `args.input_from_datastore` if ordering of task_entries is not required
 
 ```bash
 
