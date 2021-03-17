@@ -89,8 +89,7 @@ input_from_datastore = {
 }
 }
 
-## NOTE: 
-input_from_datastore: key value pairs where key refers to what is to be fetched from datastore and value is the corresponding key in datastore.
+## NOTE: input_from_datastore: key value pairs where key refers to what is to be fetched from datastore and value is the corresponding key in datastore.
 
 
 additional_dag_params = {
