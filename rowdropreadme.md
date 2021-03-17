@@ -56,7 +56,7 @@ file_name_params = [
     'report_start_date',
     'table_name'
 ]
-
+## Note: output_path_params and file_name_params will consist of the names in string form which will be used in row_drop container to fetch the values from the params dictionary and build the output_path/file_name
 
 input_file_format_details = {
     'delimiter': '\t',
@@ -89,7 +89,7 @@ input_from_datastore = {
 }
 }
 
-NOTE: 
+## NOTE: 
 input_from_datastore: key value pairs where key refers to what is to be fetched from datastore and value is the corresponding key in datastore.
 
 
@@ -106,9 +106,7 @@ additional_dag_params = {
     'table_name': table_name
 }
 
-or
-
-If not fetching from datastore(args.input_from_datastore is None), user can pass all the non standard dag parameters in additional_dag_params json object 
+## or If not fetching from datastore(args.input_from_datastore is None), user can pass all the non standard dag parameters in additional_dag_params json object 
 
 additional_dag_params = {
     'retailer': retailer,
@@ -250,18 +248,26 @@ Returns updated `params`
 
 ### STEP 4: download the file from gcs to local
 
+Note: Using the gcs library of `colpal/dataEng-container-tools/dataEng_container_tools`
+
+	gcs_io = gcs_file_io(gcs_secret_location=constant.gcs_secret_location)
+
+	local_io = gcs_file_io(gcs_secret_location=constant.gcs_secret_location, local=True)
 
 * **Case 1**
 
       if params['input_path'] is not None and params['input_bucket'] is not None:
-    
-          download the file from gcs to local
+    	
+                download the file from gcs to object using input gcs uri (gcs_io.download_file_to_object)
+	  
+	   	upload from object to local file path (local_io.upload_file_from_object)
+
 
 * **Case 2**
 
       Else:
 
-	  Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
+	   	Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
 
 
 ### STEP 5: Construct local output file path (using constant local file name)
@@ -309,15 +315,15 @@ In **`get_output_file_path`** method
   
          if output_file_name is not None:
       
-             It means the provided output_path is not absolute path 
+         	It means the provided output_path is not absolute path 
              
-	     Hence append the output_file_name also to the path
+	 	Hence append the output_file_name also to the path
 	
    * **Case 1.2**
 
          Else:
       
-             It means the provided output_path is absolute
+                It means the provided output_path is absolute
  
 
 * **Case 2** 
@@ -360,13 +366,15 @@ Build output path based on `params[‘output_path_params’]` and `params[‘add
 
       if params['output_bucket_name'] is not None:
 			
-          Upload to gcs
+      		download modified local to object(local_io.download_file_to_object)
+	  
+		upload object to gcs using output gcs uri(gcs_io.upload_file_from_object)
 
 * **Case 2**
 
       Else:
 			
-          Raise exception("output_bucket_name is None")
+          	Raise exception("output_bucket_name is None")
 
 
 ### STEP 9: Datastore: if `args.skip_datastore` is false
