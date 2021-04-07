@@ -159,29 +159,29 @@ If a parameter value is not passed as standard dag parameter for which key is al
 
 ```bash
 params ={
-            'dag_id': args.dag_id,
-            'run_id': args.run_id,
-            'output_bucket': args.output_bucket,
-            'drop_top': args.drop_top,
-            'drop_bot': args.drop_bot,
-            "airflow_task_id": args.airflow_task_id,
-            'input_path': args.input_path,
-            'input_bucket': args.input_bucket,
-            'output_path': args.output_path,
-            "input_file_encoding": args.input_file_format_details['encoding'],
-            "input_file_delimiter": args.input_file_format_details['delimiter'],
-            "header": args.input_file_format_details['header'],
-            "input_file_format": args.input_file_format_details['file_format'],
-            "output_file_format": args.output_file_format,
-            "skip_datastore": json.loads(args.skip_datastore),
-            'input_from_datastore': args.input_from_datastore,
-            'additional_dag_params': args.additional_dag_params,
-            'output_path_params': args.output_path_params,
-            'file_name_params': args.file_name_params,
-            'input_file_format_details': args.input_file_format_details,
-            'row_count': None,
-            'exceptions': None,
-            'exception_details': None
+    'dag_id': args.dag_id,
+    'run_id': args.run_id,
+    'output_bucket': args.output_bucket,
+    'drop_top': args.drop_top,
+    'drop_bot': args.drop_bot,
+    "airflow_task_id": args.airflow_task_id,
+    'input_path': args.input_path,
+    'input_bucket': args.input_bucket,
+    'output_path': args.output_path,
+    "input_file_encoding": args.input_file_format_details['encoding'],
+    "input_file_delimiter": args.input_file_format_details['delimiter'],
+    "header": args.input_file_format_details['header'],
+    "input_file_format": args.input_file_format_details['file_format'],
+    "output_file_format": args.output_file_format,
+    "skip_datastore": json.loads(args.skip_datastore),
+    'input_from_datastore': args.input_from_datastore,
+    'additional_dag_params': args.additional_dag_params,
+    'output_path_params': args.output_path_params,
+    'file_name_params': args.file_name_params,
+    'input_file_format_details': args.input_file_format_details,
+    'row_count': None,
+    'exceptions': None,
+    'exception_details': None
         }
 ```
 
@@ -195,7 +195,7 @@ If a parameter value is not passed as a standard dag parameter, and passed as on
 
 Returns updated `params`
 
-Note: If the value has been already been passed in `STEP 1` as standard dag parameter and is once again passed as in `args.additional_dag_params`. Then priority will be given to the already assigned value
+Note: If the value has been already passed in `STEP 1` as standard dag parameter and is once again passed in `args.additional_dag_params`. Then priority will be given to the already assigned value
 
 ### STEP 3: `fetch_and_store_datastore_arguments`
 
@@ -205,7 +205,7 @@ If the above is provided, the datastore key names in `args.input_from_datastore[
 
 Returns updated `params`
 
-Note: If the value has been already been passed in either `STEP 1` or `STEP 2` as standard dag parameter or `args.additional_dag_params` and once again try to fetch from datastore. Then priority will be given to the already assigned value.
+Note: If the value has been already passed in either `STEP 1` or `STEP 2` as standard dag parameter or `args.additional_dag_params` and once again try to fetch from datastore. Then priority will be given to the already assigned value.
 
 Hence, recommended to pass a value by only one of the 3 ways (standard_dag_parameters, args.additional_dag_params, datastore)
 
@@ -273,16 +273,16 @@ Note: Using the gcs library of `colpal/dataEng-container-tools/dataEng_container
 
       if params['input_path'] is not None and params['input_bucket'] is not None:
     	
-                download the file from gcs to object using input gcs uri (gcs_io.download_file_to_object)
+             download the file from gcs to object using input gcs uri (gcs_io.download_file_to_object)
 	  
-	   	       upload from object to local file path (local_io.upload_file_from_object)
+	     upload from object to local file path (local_io.upload_file_from_object)
 
 
 * **Case 2**
 
       Else:
 
-	   	Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
+	    Raise exception ("input_file_path and/or input_bucket_name are neither provided as dag  parameters nor fetched from datastore")
 
 
 ### STEP 5: Construct local output file path (using constant local file name)
@@ -379,11 +379,13 @@ Build output path based on `params[‘output_path_params’]`
 
 * **Case 1** 
 
+	
+
       if params['output_bucket'] is not None:
 			
-      		download modified local to object(local_io.download_file_to_object)
+          download modified local to object(local_io.download_file_to_object)
 	  
-		    upload object to gcs using output gcs uri(gcs_io.upload_file_from_object)
+          upload object to gcs using output gcs uri(gcs_io.upload_file_from_object)
 		    
     Note: output_file_format will be used in gcs_io.upload_file_from_object to upload file to gcs in the required format
 
@@ -391,7 +393,7 @@ Build output path based on `params[‘output_path_params’]`
 
       Else:
 			
-          	Raise exception("output_bucket is None")
+          Raise exception("output_bucket is None")
 
 
 ### STEP 9: Datastore: if `args.skip_datastore` is false
