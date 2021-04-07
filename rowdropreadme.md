@@ -111,6 +111,21 @@ input_from_datastore = {
 
 ## NOTE: input_from_datastore: key value pairs where key refers to what is to be fetched from datastore and value is the corresponding key in datastore.
 
+## If there is no requirement of ordering the task_entries, do not include the key `order_task_entries_params` and its value nested json object at all in `input_from_datastore`.
+
+example: `args.input_from_datastore` if ordering of task_entries is not required
+
+input_from_datastore = {
+    'filter_kind': 'ReportDownloadTask',
+    'filter_map': filter_map_1,
+    'fetch_datastore_params': {'input_bucket': key_in_datastore_for_input_bucket,
+                               'input_path': key_in_datastore_for_input_path,
+                               'report_start_date': key_in_datastore_for_report_start_date,
+                               'report_end_date': key_in_datestore_for_report_end_date,
+                               'schema': key_in_datestore_for_schema
+		       	       'dag_start_date': key_in_datestore_for_dag_start_date
+                               }
+}
 
 additional_dag_params = {
     'retailer': retailer,
