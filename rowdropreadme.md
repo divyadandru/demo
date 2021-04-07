@@ -213,9 +213,7 @@ Hence, recommended to pass a value by only one of the 3 ways (standard_dag_param
 
 Get the list of task entries based on the `filter_map` and `filter_kind`
 
-If `order_task_entries_params` is not `None`, sort the obtained list of entries based on the `order_task_entries_params[‘order_by_key_list’]` 
-
-and `order_task_entries_params[‘descending_order’]`, where `order_task_entries_params` is passed as a nested json object in `args.input_from_datastore` from the dag
+If `order_task_entries_params` is not `None`, sort the obtained list of entries based on the `order_task_entries_params[‘order_by_key_list’]` and `order_task_entries_params[‘descending_order’]`, where `order_task_entries_params` is passed as a nested json object in `args.input_from_datastore` from the dag
 
     order_task_entries_params = args.input_from_datastore['order_task_entries_params']
     
@@ -271,6 +269,7 @@ Note: Using the gcs library of `colpal/dataEng-container-tools/dataEng_container
 
 * **Case 1**
 
+	
 
       if params['input_path'] is not None and params['input_bucket'] is not None:
     	
