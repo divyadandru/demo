@@ -271,6 +271,7 @@ Note: Using the gcs library of `colpal/dataEng-container-tools/dataEng_container
 
 * **Case 1**
 
+
       if params['input_path'] is not None and params['input_bucket'] is not None:
     	
              download the file from gcs to object using input gcs uri (gcs_io.download_file_to_object)
